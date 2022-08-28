@@ -1,0 +1,57 @@
+import numpy as np
+from ClasePaciente import Paciente
+
+
+class Cola:
+    __items = None
+    __max = None
+    __pri = None
+    __ult = None
+    __cant = None
+
+    def __init__(self, max=100):
+        self.__items = np.empty(max, dtype=Paciente)
+        self.__max = max
+        self.__pri = 0
+        self.__ult = 0
+        self.__cant = 0
+
+    def getCant(self):
+        return self.__cant
+
+    def getPrimero(self):
+        return self.__items[self.__pri]
+
+    def vacia(self):
+        bandera = True
+        if self.__cant != 0:
+            bandera = False
+        return bandera
+
+    def insertar(self, x):
+        if self.__cant < self.__max:
+            self.__items[self.__ult] = x
+            self.__ult += 1
+            self.__cant += 1
+        else:
+            print("La cola se encuentra llena")
+
+    def suprimir(self):
+        x = None
+        if self.vacia():
+            print("La cola se encuentra vacía")
+        else:
+            x = self.__items[self.__pri]
+            self.__items[self.__pri] = 0
+            self.__pri = (self.__pri + 1) % self.__max
+            self.__cant -= 1
+        return x
+
+    def recorrer(self):
+        s = ""
+        if not self.vacia():
+            for i in range(self.__cant):
+                s = s + str(self.__items[i])
+            return s
+        else:
+            print("La cola se encuentra vacía")
