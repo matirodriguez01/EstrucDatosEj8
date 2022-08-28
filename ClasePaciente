@@ -1,0 +1,20 @@
+class Paciente:
+    __nombre = None
+    __dni = None
+    __espera = None
+    __atendido = None
+
+    def __init__(self, nom, dni, espera):
+        self.__nombre = nom
+        self.__dni = dni
+        self.__espera = espera
+        self.__atendido = 0
+
+    def __str__(self):
+        return (f"{self.__nombre}, {self.__dni}, {self.__espera} \n")
+
+    def getEspera(self):
+        return self.__espera
+
+    def actualizarEspera(self, x):
+        self.__espera = x
