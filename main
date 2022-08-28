@@ -1,0 +1,115 @@
+from ClaseCola import Cola
+from ClasePaciente import Paciente
+import random
+
+if __name__ == "__main__":
+    nombres = ["Carlos", "Carla", "Jose", "Adriana", "Pedro", "Rogelio", "Mabel"]
+    dnis = [123456, 123789, 789456, 456123, 741852, 963852]
+    especialidades = ["Ginecologia", "Clinica", "Oftalmologia", "Pediatria"]
+    mesa_entrada = 0
+    espera_cola = 0
+    cantidad = 0
+    no_atendidos = 0
+    cola_espera = Cola()
+    cola_gine = Cola()
+    cola_clin = Cola()
+    cola_pedia = Cola()
+    cola_ofta = Cola()
+    random.randint(0, 1)
+    for minuto in range(60):
+        if random.randint(0, 1) == 1:
+            paciente = Paciente(random.choice(nombres), random.choice(dnis), minuto)
+            cola_espera.insertar(paciente)
+            cantidad += 1
+        if mesa_entrada == 0 and not cola_espera.vacia():
+            mesa_entrada = 2
+            x = cola_espera.suprimir()
+            espera_cola += minuto - x.getEspera()
+            especialidad = random.choice(especialidades)
+            if especialidad == "Ginecologia":
+                if cola_gine.getCant() == 10:
+                    no_atendidos += 1
+                else:
+                    cola_gine.insertar(x)
+            if especialidad == "Clinica":
+                if cola_clin.getCant() == 10:
+                    no_atendidos += 1
+                else:
+                    cola_clin.insertar(x)
+            if especialidad == "Oftalmologia":
+                if cola_ofta.getCant() == 10:
+                    no_atendidos += 1
+                else:
+                    cola_ofta.insertar(x)
+            if especialidad == "Pediatria":
+                if cola_pedia.getCant() == 10:
+                    no_atendidos += 1
+                else:
+                    cola_pedia.insertar(x)
+        elif not cola_espera.vacia():
+            mesa_entrada -= 1
+    no_atendidos += cola_espera.getCant()
+
+    print(cantidad)
+    print(f"Tiempo promedio de espera en la fila de turnos: {espera_cola / cantidad}")
+    print(cola_gine.recorrer())
+    print(cola_clin.recorrer())
+    print(cola_pedia.recorrer())
+    print(cola_ofta.recorrer())
+
+    print(f"Pacientes no atendidos: {no_atendidos}")
+
+
+    tmedico1 = 0
+    tmedico2 = 0
+    tmedico3 = 0
+    tmedico4 = 0
+    espera_atendido1 = 0
+    espera_atendido2 = 0
+    espera_atendido3 = 0
+    espera_atendido4 = 0
+    ginecant = cola_gine.getCant()
+    clincant = cola_clin.getCant()
+    pediacant = cola_pedia.getCant()
+    oftacant = cola_ofta.getCant()
+    for minuto2 in range(240):
+        # Ginecologia
+        if tmedico1 == 0 and not cola_gine.vacia():
+            tmedico1 = 20
+            cola_gine.suprimir()
+            espera_atendido1 += minuto2
+
+        elif not cola_gine.vacia():
+            tmedico1 -= 1
+
+        # Clinica Medica
+        if tmedico2 == 0 and not cola_clin.vacia():
+            tmedico2 = 20
+            cola_clin.suprimir()
+            espera_atendido2 += minuto2
+
+        elif not cola_clin.vacia():
+            tmedico2 -= 1
+
+        # Pediatria
+        if tmedico3 == 0 and not cola_pedia.vacia():
+            tmedico3 = 20
+            cola_pedia.suprimir()
+            espera_atendido3 += minuto2
+
+        elif not cola_pedia.vacia():
+            tmedico3 -= 1
+
+        # Oftalmologia
+        if tmedico4 == 0 and not cola_ofta.vacia():
+            tmedico4 = 20
+            cola_ofta.suprimir()
+            espera_atendido4 += minuto2
+
+        elif not cola_ofta.vacia():
+            tmedico4 -= 1
+
+
+    print(f"El promedio de espera de los pacientes es:\nGinecologia: {espera_atendido1/ginecant} min\n"
+          f"Clinica medica: {espera_atendido2/clincant} min\nPediatria: {espera_atendido3/pediacant} min\n"
+          f"Oftalmologia: {espera_atendido4/oftacant}")
